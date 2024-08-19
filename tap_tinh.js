@@ -61,7 +61,7 @@ function displayQuiz(quizData) {
         const questionDiv = document.createElement('div');
         questionDiv.classList.add('question');
         questionDiv.innerHTML = `
-            <label>${index + 1}. ${item.displayQuestion} = </label>
+            <label>${index + 1}) ${item.displayQuestion} = </label>
             <input type="number" id="answer-${index}" class="answer-input" />
         `;
         quizContainer.appendChild(questionDiv);
