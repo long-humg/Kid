@@ -15,12 +15,41 @@
             color: #333;
             text-align: center;
         }
+        #settings {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        input[type="number"] {
+            padding: 5px;
+            font-size: 16px;
+            width: 60px;
+            margin: 5px;
+        }
+        #start-btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        #start-btn:hover {
+            background: #0056b3;
+        }
         #quiz {
             background: #fff;
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            display: none;
         }
         .question {
             margin: 10px 0;
@@ -50,6 +79,7 @@
             text-align: center;
             margin-top: 20px;
             transition: background-color 0.3s;
+            display: none;
         }
         #submit-btn:hover {
             background: #218838;
@@ -59,6 +89,7 @@
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: none;
         }
         #result ul {
             list-style: none;
@@ -78,8 +109,16 @@
 </head>
 <body>
     <h1>Math Quiz</h1>
+    <div id="settings">
+        <label for="num-questions">Số lượng câu hỏi:</label>
+        <input type="number" id="num-questions" value="5" min="1" max="20">
+        <label for="num-operations">Số phép toán mỗi câu:</label>
+        <input type="number" id="num-operations" value="2" min="2" max="4">
+        <button id="start-btn" onclick="startQuiz()">Bắt đầu</button>
+    </div>
+
     <div id="quiz"></div>
-    <button onclick="submitQuiz()">Submit</button>
+    <button id="submit-btn" onclick="submitQuiz()">Submit</button>
 
     <div id="result"></div>
 
