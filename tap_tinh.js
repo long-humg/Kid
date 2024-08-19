@@ -2,14 +2,13 @@
 const operations = ['+', '-', '*', '/'];
 
 // Tạo một câu hỏi với các phép toán kết hợp
-function generateQuestion() {
+function generateQuestion(numOperations) {
     while (true) {
-        const numOperands = Math.floor(Math.random() * 3) + 2; // Số lượng phép toán trong câu hỏi (2 đến 4)
-        const numbers = Array.from({ length: numOperands + 1 }, () => Math.floor(Math.random() * 9) + 1);
-        const ops = Array.from({ length: numOperands }, () => operations[Math.floor(Math.random() * operations.length)]);
+        const numbers = Array.from({ length: numOperations + 1 }, () => Math.floor(Math.random() * 9) + 1);
+        const ops = Array.from({ length: numOperations }, () => operations[Math.floor(Math.random() * operations.length)]);
 
         // Điều chỉnh các phép chia để tránh chia cho 0 và đảm bảo chia hết
-        for (let i = 0; i < numOperands; i++) {
+        for (let i = 0; i < numOperations; i++) {
             if (ops[i] === '/') {
                 while (numbers[i] % numbers[i + 1] !== 0) {
                     numbers[i + 1] = Math.floor(Math.random() * 9) + 1;
@@ -19,7 +18,7 @@ function generateQuestion() {
 
         // Tạo câu hỏi dưới dạng chuỗi
         let question = `${numbers[0]}`;
-        for (let i = 0; i < numOperands; i++) {
+        for (let i = 0; i < numOperations; i++) {
             question += ` ${ops[i]} ${numbers[i + 1]}`;
         }
 
@@ -33,11 +32,8 @@ function generateQuestion() {
     }
 }
 
-// Tạo ra 10 câu hỏi
-const quizData = Array.from({ length: 10 }, generateQuestion);
-
-// Hiển thị câu hỏi trên trang web
-function displayQuiz() {
+// Hiển thị quiz
+function displayQuiz(quizData) {
     const quizContainer = document.getElementById('quiz');
     quizContainer.innerHTML = '';
 
@@ -45,15 +41,33 @@ function displayQuiz() {
         const questionDiv = document.createElement('div');
         questionDiv.classList.add('question');
         questionDiv.innerHTML = `
-            <label>Câu ${index + 1}: ${item.question} = </label>
+            <label>${item.question} = </label>
             <input type="number" id="answer-${index}" class="answer-input" />
         `;
         quizContainer.appendChild(questionDiv);
     });
 }
 
+// Bắt đầu quiz với số lượng câu hỏi và phép toán được chỉ định
+function startQuiz() {
+    const numQuestions = parseInt(document.getElementById('num-questions').value);
+    const numOperations = parseInt(document.getElementById('num-operations').value);
+    
+    const quizData = Array.from({ length: numQuestions }, () => generateQuestion(numOperations));
+
+    displayQuiz(quizData);
+
+    // Hiển thị quiz và nút submit
+    document.getElementById('quiz').style.display = 'block';
+    document.getElementById('submit-btn').style.display = 'block';
+
+    // Lưu quizData để sử dụng khi nộp bài
+    window.quizData = quizData;
+}
+
 // Kiểm tra và hiển thị kết quả
 function submitQuiz() {
+    const quizData = window.quizData;
     const resultContainer = document.getElementById('result');
     resultContainer.innerHTML = '';
 
@@ -73,8 +87,6 @@ function submitQuiz() {
     });
 
     resultContainer.appendChild(resultList);
-    resultContainer.innerHTML += `<p>Bạn đã trả lời đúng ${score}/10 câu.</p>`;
+    resultContainer.innerHTML += `<p>Bạn đã trả lời đúng ${score}/${quizData.length} câu.</p>`;
+    resultContainer.style.display = 'block';
 }
-
-// Khởi động quiz khi tải trang
-window.onload = displayQuiz;
