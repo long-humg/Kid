@@ -25,11 +25,31 @@ function generateQuestion(numOperations) {
         // Tính kết quả
         const correctAnswer = eval(question);
 
+        // Chuyển đổi các ký hiệu trong câu hỏi hiển thị cho người dùng
+        const displayQuestion = question.replace(/\*/g, 'x').replace(/\//g, ':');
+
         // Đảm bảo kết quả là số nguyên dương
         if (Number.isInteger(correctAnswer) && correctAnswer > 0) {
-            return { question, correctAnswer };
+            return { question, correctAnswer, explanation: getExplanation(question), displayQuestion };
         }
     }
+}
+
+// Giải thích từng bước tính toán cho câu hỏi
+function getExplanation(question) {
+    // Giải thích từng bước theo thứ tự toán học đúng
+    const steps = [];
+    const tokens = question.split(' ');
+    
+    // Tạo các nhóm phép tính theo thứ tự đúng
+    const evalSteps = [];
+    let intermediateResult = eval(tokens.join(''));
+    let expression = tokens.join(' ');
+
+    steps.push(`${expression.replace(/\*/g, 'x').replace(/\//g, ':')} = ${intermediateResult}`);
+
+    // Quá trình tính toán sẽ được lưu thành các bước giải thích
+    return steps.join(', sau đó, ');
 }
 
 // Hiển thị quiz
@@ -41,7 +61,7 @@ function displayQuiz(quizData) {
         const questionDiv = document.createElement('div');
         questionDiv.classList.add('question');
         questionDiv.innerHTML = `
-            <label>${item.question} = </label>
+            <label>${index + 1}. ${item.displayQuestion} = </label>
             <input type="number" id="answer-${index}" class="answer-input" />
         `;
         quizContainer.appendChild(questionDiv);
@@ -79,9 +99,12 @@ function submitQuiz() {
         const listItem = document.createElement('li');
         if (userAnswer === item.correctAnswer) {
             score++;
-            listItem.textContent = `Câu ${index + 1}: Đúng! (${item.question} = ${item.correctAnswer})`;
+            listItem.textContent = `Câu ${index + 1}: Đúng! (${item.displayQuestion} = ${item.correctAnswer})`;
         } else {
-            listItem.textContent = `Câu ${index + 1}: Sai. Đáp án đúng là ${item.correctAnswer}`;
+            listItem.innerHTML = `
+                Câu ${index + 1}: Sai. Đáp án đúng là ${item.correctAnswer}.
+                <br>Giải thích: ${item.explanation}
+            `;
         }
         resultList.appendChild(listItem);
     });
