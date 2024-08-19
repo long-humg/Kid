@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Quiz for Kids</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        #question {
+            font-size: 24px;
+            margin: 20px;
+        }
+        input[type="number"] {
+            font-size: 18px;
+            padding: 5px;
+            width: 60px;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Math Quiz for Kids</h1>
+    <div id="question"></div>
+    <input type="number" id="answer" placeholder="Your answer" />
+    <button onclick="checkAnswer()">Submit</button>
+    <div class="message" id="message"></div>
+    <button onclick="nextQuestion()">Next Question</button>
+
+    <script src="toan_3.js"></script>
+</body>
+</html>
