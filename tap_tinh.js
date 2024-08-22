@@ -4,14 +4,20 @@ const operations = ['+', '-', '*', '/'];
 // Tạo một câu hỏi với các phép toán kết hợp
 function generateQuestion(numOperations) {
     while (true) {
-        const numbers = Array.from({ length: numOperations + 1 }, () => Math.floor(Math.random() * 9) + 1);
+        const numbers = Array.from({ length: numOperations + 1 }, () => Math.floor(Math.random() * 1000));
         const ops = Array.from({ length: numOperations }, () => operations[Math.floor(Math.random() * operations.length)]);
 
-        // Điều chỉnh các phép chia để tránh chia cho 0 và đảm bảo chia hết
+        // Điều chỉnh các phép toán
         for (let i = 0; i < numOperations; i++) {
-            if (ops[i] === '/') {
-                while (numbers[i] % numbers[i + 1] !== 0) {
-                    numbers[i + 1] = Math.floor(Math.random() * 9) + 1;
+            if (ops[i] === '*' || ops[i] === '/') {
+                numbers[i] = Math.floor(Math.random() * 9) + 1; // Nhân và chia với số <= 9
+                numbers[i + 1] = Math.floor(Math.random() * 9) + 1;
+
+                if (ops[i] === '/') {
+                    // Đảm bảo phép chia hết
+                    while (numbers[i] % numbers[i + 1] !== 0) {
+                        numbers[i + 1] = Math.floor(Math.random() * 9) + 1;
+                    }
                 }
             }
         }
@@ -40,7 +46,7 @@ function getExplanation(question) {
     // Giải thích từng bước theo thứ tự toán học đúng
     const steps = [];
     const tokens = question.split(' ');
-    
+
     // Tạo các nhóm phép tính theo thứ tự đúng
     const evalSteps = [];
     let intermediateResult = eval(tokens.join(''));
